@@ -15,13 +15,15 @@ module Spoon
   
   def self.spawn(*args)
     spawn_args = _prepare_spawn_args(args)
-    _posix_spawn(*spawn_args)
+    errno = _posix_spawn(*spawn_args)
+    raise SystemCallError.new(args[0], errno) if errno != 0
     spawn_args[0].read_int
   end
 
   def self.spawnp(*args)
     spawn_args = _prepare_spawn_args(args)
-    _posix_spawnp(*spawn_args)
+    errno = _posix_spawnp(*spawn_args)
+    raise SystemCallError.new(args[0], errno) if errno != 0
     spawn_args[0].read_int
   end
   
