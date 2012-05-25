@@ -6,4 +6,5 @@ Gem::Specification.new do |s|
   s.description = s.summary = "Spoon is an FFI binding of the posix_spawn function, providing fork+exec functionality in a single shot."
   s.files = "lib/spoon.rb"
   s.require_paths = ["lib"]
+  s.add_dependency('ffi') unless defined?(JRUBY_VERSION) # JRuby includes ffi
 end
