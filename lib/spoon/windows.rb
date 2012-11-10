@@ -13,13 +13,15 @@ module Spoon
   attach_function :_get_process_id, :GetProcessId, [:int], :ulong
   
   def self.spawn(*args)
-    spawn_args = _prepare_spawn_args(args)
-    _get_process_id(_spawnve(*spawn_args))
+    handle = _spawnve(*_prepare_spawn_args(args))
+    raise SystemCallError.new(args[0], FFI.errno) if handle == -1
+    _get_process_id(handle)
   end
   
   def self.spawnp(*args)
-    spawn_args = _prepare_spawn_args(args)
-    _get_process_id(_spawnvpe(*spawn_args))
+    handle = _spawnvpe(*_prepare_spawn_args(args))
+    raise SystemCallError.new(args[0], FFI.errno) if handle == -1
+    _get_process_id(handle)
   end
   
   private
