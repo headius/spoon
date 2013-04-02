@@ -53,7 +53,7 @@ module Spoon
 
   class SpawnAttributes
     attr_reader :pointer
-    SIZE = FFI::Platform.mac? ? FFI.type_size(:pointer) : 128
+    SIZE = FFI::Platform.mac? ? FFI.type_size(:pointer) : 512
 
     def initialize
       @pointer =  FFI::AutoPointer.new(LibC.malloc(SIZE), Releaser)
