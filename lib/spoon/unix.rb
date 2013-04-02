@@ -20,14 +20,16 @@ module Spoon
     SIZE = FFI::Platform.mac? ? FFI.type_size(:pointer) : 128
 
     def initialize
-      @pointer =  FFI::AutoPointer.new(LibC.malloc(SIZE), self.class)
+      @pointer =  FFI::AutoPointer.new(LibC.malloc(SIZE), Releaser)
       error = LibC.posix_spawn_file_actions_init(@pointer)
       raise SystemCallError.new("posix_file_actions_init", error) unless error == 0
     end
 
-    def self.release(ptr)
-      LibC.posix_spawn_file_actions_destroy(ptr)
-      LibC.free(ptr)
+    class Releaser
+      def self.call(ptr)
+        LibC.posix_spawn_file_actions_destroy(ptr)
+        LibC.free(ptr)
+      end
     end
 
     def open(fd, path, oflag, mode)
@@ -51,17 +53,19 @@ module Spoon
 
   class SpawnAttributes
     attr_reader :pointer
-    SIZE = FFI::Platform.mac? ? FFI.type_size(:pointer) : 128
+    SIZE = FFI::Platform.mac? ? FFI.type_size(:pointer) : 512
 
     def initialize
-      @pointer =  FFI::AutoPointer.new(LibC.malloc(SIZE), self.class)
+      @pointer =  FFI::AutoPointer.new(LibC.malloc(SIZE), Releaser)
       error = LibC.posix_spawnattr_init(@pointer)
       raise SystemCallError.new("posix_spawnattr_init", error) unless error == 0
     end
 
-    def self.release(ptr)
-      LibC.posix_spawnattr_destroy(ptr)
-      LibC.free(ptr)
+    class Releaser
+      def self.call(ptr)
+        LibC.posix_spawnattr_destroy(ptr)
+        LibC.free(ptr)
+      end
     end
 
     def pgroup=(group)
