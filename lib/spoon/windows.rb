@@ -16,6 +16,7 @@ require 'ffi'
 
 module Spoon
   P_NOWAIT = 1
+  extend FFI::Library
   
   attach_function :_spawnve, [:int, :string, :pointer, :pointer], :int
   attach_function :_spawnvpe, [:int, :string, :pointer, :pointer], :int
