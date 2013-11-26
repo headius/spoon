@@ -7,4 +7,5 @@ Gem::Specification.new do |s|
   s.files = `git ls-files`.lines.map(&:chomp)
   s.require_paths = ["lib"]
   s.add_dependency('ffi')
+  s.license = "Apache-2.0"
 end
