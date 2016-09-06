@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "spoon"
-  s.version = "0.0.6"
+  s.version = "0.0.7.dev"
   s.authors = ["Charles Oliver Nutter"]
   s.date = Time.now.strftime('%Y-%m-%d')
   s.description = s.summary = "Spoon is an FFI binding of the posix_spawn function (and Windows equivalent), providing fork+exec functionality in a single shot."
